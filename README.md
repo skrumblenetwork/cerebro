@@ -1,10 +1,10 @@
-<img src="/uploads/74f9f8d8dbf06d933a8d728e012222f4/SKM_Logo_black.svg" width=30% height=30%>
+<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/img/SKM_Logo_black.svg" width=30% height=30%>
 
 # Blockchain Visualizer
 Skrumble Networks blockchain visualizer pulls data in real time from blockchains, takes that information and represents each transaction as a circle, whose size scales with value. Once a block is confirmed all the transactions are sent to that block, and it rides away. You can also view idividual transaction values, average block time, and transactions per second.
 <br>
 
- 
+
 <p>
   <a href="#getting-started">Getting Started</a> •
   <a href="#features">Features</a> •
@@ -12,16 +12,12 @@ Skrumble Networks blockchain visualizer pulls data in real time from blockchains
   <a href="#links">Links</a> •
   <a href="#to do">To Do</a> •
   <a href="#past designs">Past Designs</a>•
-  <a href="#license">License</a> 
+  <a href="#license">License</a>
 </p>
 
 #### Current Version
-<img src="/uploads/76e63d39f877e080b0aa2a450fa6b6f1/ship2.gif">
+<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/img/ship2.gif">
 
-
-
-
-    
 # Getting Started
 
 ### Prerequisites
@@ -34,7 +30,7 @@ $ cd skm-visualizer                                            # Move to the dir
 ```
 
 Before using `npm` the file `config.example.json` needs to be renamed to `config.json` it will be located in the `src` folder.
-Within config.json set the endpoint to the network you are trying to connect to. 
+Within config.json set the endpoint to the network you are trying to connect to.
 you need to change the endpoint to the network
 
 
