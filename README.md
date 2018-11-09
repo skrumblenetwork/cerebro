@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/img/SKM_Logo_black.svg" width=30% height=30%>
+<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/master/img/SKM_Logo_black.png" width="30%" height="30%">
 
 # Blockchain Visualizer
 Skrumble Networks blockchain visualizer pulls data in real time from blockchains, takes that information and represents each transaction as a circle, whose size scales with value. Once a block is confirmed all the transactions are sent to that block, and it rides away. You can also view idividual transaction values, average block time, and transactions per second.
@@ -16,7 +16,7 @@ Skrumble Networks blockchain visualizer pulls data in real time from blockchains
 </p>
 
 #### Current Version
-<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/img/ship2.gif">
+<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/master/img/ship2.gif">
 
 # Getting Started
 
