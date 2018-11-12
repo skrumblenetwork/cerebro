@@ -9,7 +9,6 @@ Skrumble Network's Cerebro is blockchain visualizer that pulls data in real time
   <a href="#getting-started">Getting Started</a> •
   <a href="#features">Features</a> •
   <a href="#contact">Contact</a> •
-  <a href="#links">Links</a> •
   <a href="#coming-next">Coming Next</a> •
   <a href="#license">License</a>
 </p>
