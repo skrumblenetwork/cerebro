@@ -84,7 +84,7 @@ canvas {
   left: 0;
   height: 50vh;
   width: 100%;
-  background: linear-gradient(to bottom, #162140, #6378b5);
+  background: linear-gradient(to bottom, #000, #6378b5);
 
   .stars {
     width: 100%;
@@ -96,9 +96,12 @@ canvas {
 
 .banner {
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  position: absolute;
+  width: 100%;
   border-bottom: 1px solid #bbb;
   background-color: #fafafa;
   box-shadow: 0 -3px 2px 6px rgba(0,0,0,0.05);
@@ -108,7 +111,7 @@ canvas {
 .footer {
   width: 100%;
   height: 56px;
-  background: #162140;
+  background: #000;
   color: #FFF;
   font-size: 14px;
   display: flex;
@@ -143,7 +146,7 @@ canvas {
 .block-status {
   opacity: 0.9;
   border-radius: 50px;
-  background-color: #162140;
+  background-color: #000;
   color: #ffffff;
   padding: 2px 10px;
   text-transform: uppercase;
@@ -192,18 +195,12 @@ canvas {
   display: inline-block;
   min-width: 50px;
   padding: 0 50px 0 20px;
-  border-left: solid 4px #609bb1;
+  border-left: solid 4px #BE494C;
 }
 
 .all-content {
   display: flex;
   flex-direction: column;
-}
-
-.banner {
-  flex: 0 0 auto;
-  position: absolute;
-  width: 100%;
 }
 
 .main-content {
@@ -214,7 +211,6 @@ canvas {
 
 .settings .label {
   min-width: 140px;
-  color: #609bb1;
 }
 
 input[type="number"] {
@@ -257,14 +253,14 @@ input[type="range"] {
     width: 20px;
     height: 20px;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.15);
-    background-color: #609bb1;
+    background-color: #7d8a8f;
     border-radius: 50%;
   }
 }
 
 
 .label {
-  color: #609bb1;
+  color: #000;
   font-size: 12px;
 }
 
@@ -286,7 +282,7 @@ input[type="range"] {
   padding: 20px;
   padding-left: 130px;
   width: calc(100% - 150px);
-  background-color: #162140;
+  background-color: #000;
 }
 
 .logo {

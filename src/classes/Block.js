@@ -1,8 +1,8 @@
 class Block {
-  constructor(svg, points, offset, animationSpeed) {
+  constructor(svg, points, offset, animationSpeed, hide=false) {
     this.offset = offset
 
-    this.group = svg.append('g').attr('transform', `translate(${points[0][0] - this.offset}, ${points[0][1]})rotate(270)`).attr('opacity', 1)
+    this.group = svg.append('g').attr('transform', `translate(${points[0][0] - this.offset}, ${points[0][1]})rotate(270)`).attr('opacity', hide ? 0 : 1)
 
     this.label = this.group.append("text")
        .attr('transform', "translate(20, -5)")
@@ -27,8 +27,12 @@ class Block {
     return this.label
   }
 
+  show() {
+    this.group.attr('opacity', 1)
+  }
+
   startTransition(d3, translateAlong, points, keep=false, speed=null, ease) {
-    this.group.transition()
+    return this.group.transition()
         .ease(ease || d3.easeBackIn)
         // .attrTween("transform", translateAlong(path.node()))
         .attr("transform", `translate(${points[1][0] - this.offset}, ${points[1][1]}) rotate(270)`)
@@ -39,6 +43,7 @@ class Block {
           this.group.transition()
                 .attr('opacity', 0)
                 .duration(1500)
+
           setTimeout(() => {
             this.group.remove()
           }, 2000)

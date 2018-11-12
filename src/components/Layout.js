@@ -65,135 +65,144 @@ class Layout extends Component {
           }
         });
 
+        // Define the div for the tooltip
+        const div = d3.select("body").append("div")
+                      .attr("class", "tooltip")
+                      .style("opacity", 0);
+
         const blockTimes = []
         let blockDistance = 0
         let currentBlock
+        let isAnimating = false
 
         function createStartBlock() {
-          if(currentBlock && currentBlock.g) {
-            currentBlock.g.remove()
-          }
+          return new Promise((resolve, reject) => {
+            if(currentBlock && currentBlock.g) {
+              currentBlock.g.remove()
+            }
+            isAnimating = true
 
-          this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 0)"
-          this_var.refs.blockstatus.style.width = "153px"
+            this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 0)"
+            this_var.refs.blockstatus.style.width = "153px"
 
-          setTimeout(() => {
-            this_var.setState({
-              blockStatus: 'Preparing for take off'
+            setTimeout(() => {
+              this_var.setState({
+                blockStatus: 'Preparing for take off'
+              })
+              this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 255)"
+            }, 550)
+
+
+            currentBlock = new Block(shipsvg, app.config.startPoints, app.config.blockOffset)
+
+            currentBlock.startTransition(d3, translateAlong, app.config.startPoints, true, 2000, d3.easeBounceOut).on('end', () => {
+              // currentBlock.g.remove()
+              isAnimating = false
+              resolve()
             })
-            this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 255)"
-          }, 550)
-
-
-          currentBlock = new Block(shipsvg, app.config.startPoints, app.config.blockOffset)
-
-          currentBlock.startTransition(d3, translateAlong, app.config.startPoints, true, 2000, d3.easeBounceOut)
+          })
         }
 
         createStartBlock()
 
         function moveBlock(b) {
-          let newB = new Block(shipsvg, points, app.config.blockOffset, this_var.state.animationSpeed)
-          blockDistance = 0
-
-          this_var.setState({
-            currentBlock: b.number
-          })
-
-          blocks.push({
-            block: b,
-            element: newB.g
-          })
-
-          blockTimes.push(b.timestamp)
-
-          if(blockTimes.length > 1) {
-            for(let i = 1; i < blockTimes.length - 1; i++) {
-              blockDistance += blockTimes[i] - blockTimes[i - 1]
-            }
+          return new Promise(async (resolve, reject) => {
+            let newB = new Block(shipsvg, points, app.config.blockOffset, this_var.state.animationSpeed, isAnimating)
+            blockDistance = 0
 
             this_var.setState({
-              blockSpeed: `${Math.round((blockDistance / blockTimes.length) * 100) / 100}s`
+              currentBlock: b.number
             })
-          }
 
-          //send to back
-          newB.g.each(function() {
-            const firstChild = this.parentNode.firstChild;
-            if (firstChild) {
-                this.parentNode.insertBefore(this, firstChild);
+            blocks.push({
+              block: b,
+              element: newB.g
+            })
+
+            blockTimes.push(b.timestamp)
+
+            if(blockTimes.length > 1) {
+              for(let i = 1; i < blockTimes.length - 1; i++) {
+                blockDistance += blockTimes[i] - blockTimes[i - 1]
+              }
+
+              this_var.setState({
+                blockSpeed: `${Math.round((blockDistance / blockTimes.length) * 100) / 100}s`
+              })
             }
-          })
 
-          app.web3.eth.getBlock(b.number).then((data) => {
-            data.transactions.forEach(t => {
-              if(transactions[t]) {
-                transactions[t].onBlock = true
-                transactions[t].element.attr("class", "blockNode")
-
-                const randomX = RandomRange(-90, -60)
-                const randomY = RandomRange(0, 20)
-
-                // animate onto block
-                transactions[t].element.transition()
-                                       // .attr("cx", (width / 2) + randomX)
-                                       .attr("cx", (width / 2) + 5)
-                                       // .attr("cy", 0 + randomY)
-                                       .attr("cy", -5)
-                                       .attr("r", 3)
-                                       .duration(2000)
-                                       .on("end", () => {
-                                         // stick the animated transaction into the block group
-                                         if(!transactions[t]) {
-                                           return
-                                         }
-
-                                         transactions[t].element.attr('cx', randomX).attr('cy', randomY)
-
-                                         transactions[t].element.remove();
-                                         // const removed = transactions[t].element.remove();
-                                         // const fblock = blocks.filter((bl) => bl.block.number === b.number)
-                                         // if(fblock[0]) {
-                                         //   fblock[0].element.append(() => {
-                                         //     return removed.node();
-                                         //   });
-                                         // }
-                                       })
+            //send to back
+            newB.g.each(function() {
+              const firstChild = this.parentNode.firstChild;
+              if (firstChild) {
+                  this.parentNode.insertBefore(this, firstChild);
               }
             })
 
-            setTimeout(() => {
-              if(currentBlock && currentBlock.g) {
-                currentBlock.g.remove()
-              }
+            app.web3.eth.getBlock(b.number).then((data) => {
+              data.transactions.forEach(t => {
+                if(transactions[t]) {
+                  transactions[t].onBlock = true
+                  transactions[t].element.attr("class", "blockNode")
 
-              newB.startTransition(d3, translateAlong, points)
+                  const randomX = RandomRange(-90, -60)
+                  const randomY = RandomRange(0, 20)
 
-              this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 0)"
+                  // animate onto block
+                  transactions[t].element.transition()
+                                         // .attr("cx", (width / 2) + randomX)
+                                         .attr("cx", (width / 2) + 5)
+                                         // .attr("cy", 0 + randomY)
+                                         .attr("cy", -5)
+                                         .attr("r", 3)
+                                         .duration(2000)
+                                         .on("end", () => {
+                                           // stick the animated transaction into the block group
+                                           if(!transactions[t]) {
+                                             return
+                                           }
+
+                                           transactions[t].element.attr('cx', randomX).attr('cy', randomY)
+
+                                           transactions[t].element.remove();
+
+                                           delete transactions[t]
+                                         })
+                }
+              })
 
               setTimeout(() => {
-                this_var.setState({
-                  blockStatus: 'LIFT OFF!'
+                if(!isAnimating) {
+                  currentBlock.g.remove()
+                  newB.show()
+                }
+
+                newB.startTransition(d3, translateAlong, points).on('end', () => {
+                  createStartBlock()
                 })
-                this_var.refs.blockstatus.style.width = "52px"
-                this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 255)"
-              }, 550)
 
+                this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 0)"
 
-              setTimeout(createStartBlock, 2250)
-            }, 2250)
+                setTimeout(() => {
+                  this_var.setState({
+                    blockStatus: 'LIFT OFF!'
+                  })
+                  this_var.refs.blockstatus.style.width = "52px"
+                  this_var.refs.blockstatus.style.color = "rgba(255, 255, 255, 255)"
+
+                  resolve()
+                }, 550)
+
+              }, 2250)
+            })
+
+            if(blocks.length > maxBlocksOnScreen) {
+                blocks.shift().element.remove()
+            }
           })
-
-          if(blocks.length > maxBlocksOnScreen) {
-              blocks.shift().element.remove()
-          }
 
         }
 
-        // Define the div for the tooltip
-        const div = d3.select("body").append("div")
-                      .attr("class", "tooltip")
-                      .style("opacity", 0);
 
         function spawnTransaction(t) {
           if(!t || !t.value || !svg) return
