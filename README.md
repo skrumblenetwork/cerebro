@@ -62,4 +62,4 @@ For all other inquiries, please contact Shelby Pearce, Marketing Manager at Skru
 
 # License
 
-Usage is provided under the MIT License. See [LICENSE](./master/LICENSE) for the full details.
+Usage is provided under the MIT License. See [LICENSE](./LICENSE) for the full details.
