@@ -1,24 +1,22 @@
-<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/master/img/SKM_Logo_black.png" width="30%" height="30%">
+![Skrumble Network](https://raw.githubusercontent.com/skrumblenetwork/cerebro/master/img/SKM_Logo_black.png)
 
 # Cerebro: Blockchain Visualizer
 
 Skrumble Network's Cerebro is blockchain visualizer that pulls data in real time from our blockchain, takes that information and represents each transaction as a circle, whose size scales with value. Once a block is confirmed all the transactions are sent to that block, and it rides away. You can also view individual transaction values, average block time, and transactions per second.
-<br>
 
-<p>
-  <a href="#getting-started">Getting Started</a> •
-  <a href="#features">Features</a> •
-  <a href="#contact">Contact</a> •
-  <a href="#coming-next">Coming Next</a> •
-  <a href="#license">License</a>
-</p>
+[Getting Started](#getting-started) •
+[Features](#features) •
+[Contact Us](#contact) •
+[Coming Next](#coming-next) •
+[License](#license)
 
-#### Current Version
+## Current Version
 
-<img src="https://raw.githubusercontent.com/skrumblenetwork/cerebro/master/img/ship2.gif">
+Live demo: [https://skrumblenetwork.github.io/cerebro/](https://skrumblenetwork.github.io/cerebro/)
+
+![Current Version Demo](https://raw.githubusercontent.com/skrumblenetwork/cerebro/master/img/ship2.gif)
 
 # Getting Started
-
 ### Prerequisites
 
 To run the visualizer you will need [Git](https://git-scm.com/) and [Node.js](https://nodejs.org/en/download/) to install.
