@@ -1,5 +1,6 @@
 {
   "name": "d3-network-visual",
+  "homepage": "https://skrumblenetwork.github.io/cerebro",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
