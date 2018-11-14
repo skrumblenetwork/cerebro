@@ -334,10 +334,6 @@ class Layout extends Component {
               </div>
               <canvas className="canvas" ref="canvas"></canvas>
               <img src="/images/cat.png" alt="cat" ref="cat" width="10px" style={{display: 'none'}} />
-              <video autoPlay loop ref="video" style={{display: 'none'}}>
-                <source src="https://i.imgur.com/no3t9ib.webm" type="video/webm" />
-              </video>
-
               <footer className="footer">
                 Skrumble Network © 2018
               </footer>
