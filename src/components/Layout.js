@@ -6,6 +6,11 @@ import {
     translateAlong,
     RandomRange,
 } from '../classes/Util'
+import config from '../config.json'
+
+
+const axios = require('axios')
+const SunCalc = require('suncalc');
 
 let app;
 
@@ -20,7 +25,8 @@ class Layout extends Component {
         transactionsVisible: 500,
         minimumTransactionsVisible: 0,
         maximumTransactionsVisible: 10000,
-        blockStatus: 'Preparing for take off'
+        blockStatus: 'Preparing for take off',
+        background: ''
       };
     }
 
@@ -31,6 +37,84 @@ class Layout extends Component {
 
     onAnimationSpeedChange = (e) => {
       this.setState({ animationSpeed: e.target.value });
+    }
+
+    async calculateBackgroundColor() {
+
+      const day = {
+        R: 135,
+        G: 206,
+        B: 250
+      };
+
+      const night = {
+        R: 29,
+        G: 46,
+        B: 73
+      };
+
+      const dayDiff = {
+        R: day.R - night.R,
+        G: day.G - night.G,
+        B: day.B - night.B
+      }
+
+      const nightDiff = {
+        R: night.R - day.R,
+        G: night.G - day.G,
+        B: night.B - day.B
+      }
+
+      // determine users location by ip
+      // used for sunrise/sunset times to update background colors
+      let locData;
+      try {
+
+        const userLocation = await axios.get("http://ip-api.com/json", {crossdomain: true})
+        locData = userLocation.data
+
+      } catch(e) {
+
+        locData = {
+          lon: 51.5,
+          lat: -0.1
+        }
+
+      }
+  
+      const sunTimes = SunCalc.getTimes(new Date(), locData.lat, locData.lon)
+
+      const sunrise = sunTimes.sunrise;
+      const sunset = sunTimes.sunset;
+
+      const daylength = sunset - sunrise;
+      
+      const currentTime = new Date();
+
+      const sunriseDiff = currentTime - sunrise;
+
+      const sunsetDiff = currentTime - sunset;
+
+      if(sunriseDiff >= 0) {
+        const r = Math.round((dayDiff.R * (sunriseDiff / daylength)) + night.R)
+        const g = Math.round((dayDiff.G * (sunriseDiff / daylength)) + night.G)
+        const b = Math.round((dayDiff.B * (sunriseDiff / daylength)) + night.B)
+
+        this.setState({
+          background: `linear-gradient(to bottom, #000, rgb(${r}, ${g}, ${b}))`
+        })
+
+      } else {
+        const r = Math.round((nightDiff.R * (sunsetDiff / daylength)) + day.R)
+        const g = Math.round((nightDiff.G * (sunsetDiff / daylength)) + day.G)
+        const b = Math.round((nightDiff.B * (sunsetDiff / daylength)) + day.B)
+
+        this.setState({
+          background: `linear-gradient(to bottom, #000, rgb(${r}, ${g}, ${b}))`
+        })
+
+      }
+
     }
 
     async componentDidMount() {
@@ -52,12 +136,30 @@ class Layout extends Component {
         this.refs.canvas.width = app.width;
         this.refs.canvas.height = app.height;
 
+        setInterval(this.calculateBackgroundColor(), 60000)
 
-        app.web3.eth.subscribe('pendingTransactions', (err, res) => {
-          app.web3.eth.getTransaction(res).then((data) => {
-            spawnTransaction(data)
-          });
-        });
+        const contract = new app.web3.eth.Contract(config.abi, config.contract)
+        
+        const eventJsonInterface = app.web3.utils._.find(
+          contract._jsonInterface,
+          o => o.name === 'Transfer' && o.type === 'event',
+        )
+
+        app.web3.eth.subscribe('logs', {
+          address: config.contract,
+          topics: [eventJsonInterface.signature]
+        }, (err, res) => {
+          if(!err && res && res.data) {
+            const wei = parseInt(res.data);
+
+            const transaction = {
+              value: wei,
+              hash: res.transactionHash
+            }
+
+            spawnTransaction(transaction)
+          }
+        })
 
         app.web3.eth.subscribe('newBlockHeaders', (err, res) => {
           if(!err) {
@@ -139,7 +241,11 @@ class Layout extends Component {
               }
             })
 
-            app.web3.eth.getBlock(b.number).then((data) => {
+            app.web3.eth.getBlock(b.number - config.bufferBlocks).then((data) => {
+              if(!data) {
+                return
+              }
+
               data.transactions.forEach(t => {
                 if(transactions[t]) {
                   transactions[t].onBlock = true
@@ -209,7 +315,7 @@ class Layout extends Component {
 
           const x = RandomRange(0, width)
           const y = RandomRange(0, height)
-          const value = parseInt(t.value) / 1000000000000000000
+          const value = parseInt(t.value) / 1e18
           const r = Math.max(3, Math.min(value, 50))
           const rgba = [RandomRange(0, 255), RandomRange(0, 255), RandomRange(0, 255), Math.max(RandomRange(0, 1), 0.3)]
 
@@ -322,7 +428,7 @@ class Layout extends Component {
               </div>
             </div>
             <div className="main-content">
-              <div className="background">
+              <div className="background" style={{color: "red", background: this.state.background}} ref="background">
                 <div className="stars" />
               </div>
               <svg className="shipsvg" ref="shipsvg" />

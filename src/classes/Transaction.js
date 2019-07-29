@@ -1,3 +1,5 @@
+import config from '../config';
+
 class Transaction {
   constructor(d3, svg, div, width, height, x, y, r, value, rgba) {
 
@@ -17,7 +19,7 @@ class Transaction {
                           div.transition()
                               .duration(200)
                               .style("opacity", .9);
-                          div.html(value + " ETH")
+                          div.html(value + " " + config.token)
                               .style("left", (d3.event.pageX) + "px")
                               .style("top", (d3.event.pageY - 28) + "px");
                           })

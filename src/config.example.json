@@ -1,3 +1,7 @@
 {
-  "web3API": "ws://127.0.0.1:8546"
+  "web3API": "wss://ropsten.infura.io/ws",
+  "bufferBlocks": 10,
+  "token": "",
+  "contract": "",
+  "abi": []
 }

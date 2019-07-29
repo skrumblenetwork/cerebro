@@ -1,24 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46.448 136">
   <defs>
     <style>
-      .cls-1 {
-        fill: #69c5d1;
+      .cls-1{
+        fill:#d1787c
       }
-
       .cls-2 {
-        fill: #0a8294;
+        fill:#953337
       }
-
-      .cls-3 {
-        fill: #e0a4d4;
+      .cls-3{
+        fill: #EEE;
       }
-
-      .cls-4 {
-        fill: #a0dae3;
+      .cls-4{
+        fill:#AAA
       }
-
-      .cls-5 {
-        fill: #c765a7;
+      .cls-5{
+        fill:#953337
       }
     </style>
   </defs>
