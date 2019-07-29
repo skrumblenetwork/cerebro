@@ -70,19 +70,19 @@ class Layout extends Component {
       let locData;
       try {
 
-        const userLocation = await axios.get("http://ip-api.com/json", {crossdomain: true})
+        const userLocation = await axios.get("https://ipapi.co/json/", {crossdomain: true})
         locData = userLocation.data
 
       } catch(e) {
 
         locData = {
-          lon: 51.5,
-          lat: -0.1
+          longitude: 51.5,
+          latitude: -0.1
         }
 
       }
   
-      const sunTimes = SunCalc.getTimes(new Date(), locData.lat, locData.lon)
+      const sunTimes = SunCalc.getTimes(new Date(), locData.latitude, locData.longitude)
 
       const sunrise = sunTimes.sunrise;
       const sunset = sunTimes.sunset;
